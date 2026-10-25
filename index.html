@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	c
     <style>
         .hidden { display: none; }
         .revealed-game {
@@ -19,16 +20,16 @@
             cursor: pointer;
             margin: 5px 0;
         }
-        .revealed-game button:hover { background: #dddddd; }
+        .revealed-game button:hover { background: #8A9A5B; }
         hr { border: 0; border-top: 1px dashed #ccc; margin: 20px 0; }
         pre { font-size: 12px; line-height: 1.2; }
     </style>
 </head>
 <body>
 
-<title>HI HOLA BONJOUR I CANT DO ALL THE LANGUAGES</title>
+<title>ClIcK</title>
 
-<B>THIS IS A RANDOM PAGE</B> ITS EMPTY WHY ARE U STILL HERE. ALL U CAN DO IS CLICK THE BUTTOON
+<B>HI HOLA BONJOUR I CANT DO ALL THE LANGUAGES,THIS IS A RANDOM PAGE</B> ITS EMPTY WHY ARE U STILL HERE. ALL U CAN DO IS CLICK THE BUTTOON
 
 <br>
 <br>SAMPLE TEXT
@@ -39,20 +40,19 @@ BUTTON
 <br>
 <button id="counterBtn">Clicks: 0</button>
 
-    <!-- IVE FIXED IT BUT MY ASCII ART GETS MESED UP -->
+    <!-- THE ENTIRE FIRST GAME (HIDDEN UNTIL 100 CLICKS) -->
     <div id="secretGameZone" class="hidden revealed-game">
         <hr>
         <pre>
   ___    __     _____   ___    _  __
  /  _\  |  |   |_   _| /  _\  | || /
-
  | |    |  |     | |   | |    |    |
  | |    |  |     | |   | |    |    \   THE BUTTON
- | |_   |  |_   _| |_  | |_   | |\  \  
+.| |_  .|  |_   .| |_ .| |_  .| |\  \  
  \___/  \____| |_____| \___/  |_| \__\ 
         </pre>
 
-        <div>You have <strong id="click-count">0</strong> clickS(if u dont have more than 1 -_-).</div>
+        <div>You have <strong id="click-count">0</strong> clickS (if u dont have more than 1 -_-).</div>
         <button onclick="eatClick()">Eat a Click</button>
 
         <!-- The First Hidden Section (Unlocks at 10 Clicks) -->
@@ -68,59 +68,47 @@ BUTTON
         <div id="adventure-zone" class="hidden">
             <hr>
             <h3>The Foresty Forest</h3>
-            <p>You wander deep into the woods...</p>
+            <p>You wander deep into the woods... and die, you have a choice, click moore or <br>stop playing this game because you have better things to do and better games to play</p>
         </div>
     </div>
 
     <script>
-        // Main button element and zone reference
+        // Main button logic
+        let count = 0;
         const button = document.getElementById('counterBtn');
         const secretGameZone = document.getElementById('secretGameZone');
 
-        // FIXED: Combined 'count' and 'clicks' into ONE single variable
+        button.addEventListener('click', () => {
+            count++; 
+            button.textContent = `Clicks: ${count}`;
+            
+            // Unlocks the entire game at 100 clicks
+            if (count >= 100) {
+                secretGameZone.classList.remove('hidden');
+            }
+        });
+
+        // Hidden Game Internal Logic
         let clicks = 0;
         let factories = 0;
         let factoryCost = 10;
 
-        // FIXED: Unified display logic to handle BOTH counters/zones seamlessly
         function updateDisplay() {
-            button.textContent = `Clicks: ${clicks}`;
             document.getElementById('click-count').innerText = clicks;
             document.getElementById('factory-count').innerText = factories;
             document.getElementById('buy-factory-btn').innerText = `Buy Factory (Cost: ${factoryCost} Click)`;
 
-            // Unlocks the entire game at 100 clicks
-            if (clicks >= 100) {
-                secretGameZone.classList.remove('hidden');
-            }
-
-            // Internal game zone unlocks
             if (clicks >= 10) {
                 document.getElementById('merchant-zone').classList.remove('hidden');
-            } else {
-                // Hides merchant again if clicks fall below 10 (e.g., after eating/buying)
-                document.getElementById('merchant-zone').classList.add('hidden'); 
             }
-
             if (clicks >= 50) {
                 document.getElementById('adventure-zone').classList.remove('hidden');
-            } else {
-                document.getElementById('adventure-zone').classList.add('hidden');
             }
         }
 
-        // Main button logic
-        button.addEventListener('click', () => {
-            clicks++; 
-            updateDisplay();
-        });
-
-        // FIXED: Eat click now correctly SUBTRACTS a click instead of adding one
         function eatClick() {
-            if (clicks > 0) {
-                clicks--;
-                updateDisplay();
-            }
+            clicks++;
+            updateDisplay();
         }
 
         function buyFactory() {
@@ -131,7 +119,6 @@ BUTTON
             }
         }
 
-        // Factory automation loop
         setInterval(function() {
             if (factories > 0) {
                 clicks += factories;
